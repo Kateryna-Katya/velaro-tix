@@ -1,112 +1,110 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. Плавный скролл
-  const lenis = new Lenis();
-  function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-  requestAnimationFrame(raf);
+    // 1. Инициализация плавного скролла Lenis
+    const lenis = new Lenis();
+    function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
 
-  // 2. Инициализация иконок
-  lucide.createIcons();
+    // 2. Инициализация иконок Lucide
+    lucide.createIcons();
 
-  // 3. Анимация заголовков SplitType + GSAP
-  const titles = document.querySelectorAll('.section-title');
-  titles.forEach(title => {
-      const text = new SplitType(title, { types: 'words' });
-      gsap.from(text.words, {
-          scrollTrigger: {
-              trigger: title,
-              start: "top 85%",
-          },
-          opacity: 0,
-          y: 20,
-          duration: 0.8,
-          stagger: 0.1,
-          ease: "power2.out"
-      });
-  });
+    // 3. ФИКС: Анимация карточек через forEach
+    // Секция ПРАКТИКИ
+    document.querySelectorAll('.practice-card').forEach((card, index) => {
+        gsap.from(card, {
+            scrollTrigger: {
+                trigger: card,      // Триггер — сама карточка
+                start: "top 90%",   // Начинать, когда карточка на 90% внизу экрана
+                toggleActions: "play none none none"
+            },
+            opacity: 0,
+            y: 50,
+            duration: 0.8,
+            ease: "power2.out",
+            delay: index * 0.1 // Небольшая задержка для эффекта очереди
+        });
+    });
 
-  // 4. Появление карточек при скролле
-  gsap.from('.practice-card', {
-      scrollTrigger: {
-          trigger: '.practices',
-          start: "top 70%",
-      },
-      opacity: 0,
-      y: 40,
-      duration: 1,
-      stagger: 0.2,
-      ease: "power3.out"
-  });
+    // Секция ОБУЧЕНИЕ (Steps)
+    document.querySelectorAll('.edu-step').forEach((step, index) => {
+        gsap.from(step, {
+            scrollTrigger: {
+                trigger: step,
+                start: "top 90%",
+            },
+            opacity: 0,
+            x: index % 2 === 0 ? -30 : 30, // Вылет слева или справа
+            duration: 1,
+            ease: "expo.out"
+        });
+    });
 
-  // 5. Анимация чисел в инновациях
-  const counters = document.querySelectorAll('[data-gsap="count"] span');
-  counters.forEach(counter => {
-      const target = +counter.innerText;
-      gsap.from(counter, {
-          scrollTrigger: {
-              trigger: '.innovation',
-              start: "top 60%",
-          },
-          innerText: 0,
-          duration: 2,
-          snap: { innerText: 1 },
-          ease: "expo.out"
-      });
-  });
+    // 4. Анимация заголовков через SplitType
+    document.querySelectorAll('.section-title').forEach(title => {
+        const text = new SplitType(title, { types: 'words' });
+        gsap.from(text.words, {
+            scrollTrigger: {
+                trigger: title,
+                start: "top 85%",
+            },
+            opacity: 0,
+            y: 20,
+            stagger: 0.05,
+            duration: 0.6
+        });
+    });
 
-  // 6. Мобильное меню (Полная логика)
-  const burger = document.querySelector('.burger');
-  const nav = document.querySelector('.nav');
-  const body = document.body;
+    // 5. Валидация телефона (только цифры)
+    const phoneInput = document.getElementById('phone');
+    if (phoneInput) {
+        phoneInput.addEventListener('input', (e) => {
+            e.target.value = e.target.value.replace(/\D/g, '');
+        });
+    }
 
-  burger.addEventListener('click', () => {
-      burger.classList.toggle('burger--active');
-      nav.classList.toggle('nav--active'); // Добавьте этот класс в CSS для display: flex
-      body.style.overflow = nav.classList.contains('nav--active') ? 'hidden' : '';
-  });
+    // 6. Математическая капча
+    const captchaQ = document.getElementById('captcha-question');
+    const n1 = Math.floor(Math.random() * 10);
+    const n2 = Math.floor(Math.random() * 5);
+    const result = n1 + n2;
+    if (captchaQ) captchaQ.innerText = `${n1} + ${n2} = `;
 
-  // 7. Валидация телефона (только цифры)
-  const phoneInput = document.getElementById('phone');
-  if(phoneInput) {
-      phoneInput.addEventListener('input', (e) => {
-          e.target.value = e.target.value.replace(/\D/g, '');
-      });
-  }
+    // 7. Обработка формы Контактов
+    const form = document.getElementById('contact-form');
+    const formMsg = document.getElementById('form-message');
 
-  // 8. Математическая капча и форма
-  const captchaQ = document.getElementById('captcha-question');
-  if(captchaQ) {
-      const n1 = Math.floor(Math.random() * 10);
-      const n2 = Math.floor(Math.random() * 5);
-      const correct = n1 + n2;
-      captchaQ.innerText = `${n1} + ${n2} = `;
+    form?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const userAns = parseInt(document.getElementById('captcha-answer').value);
+        
+        if (userAns !== result) {
+            formMsg.innerText = "Неверный ответ капчи!";
+            formMsg.style.color = "var(--color-accent)";
+            formMsg.style.display = "block";
+            return;
+        }
 
-      const form = document.getElementById('contact-form');
-      form.addEventListener('submit', (e) => {
-          e.preventDefault();
-          const ans = parseInt(document.getElementById('captcha-answer').value);
-          const msg = document.getElementById('form-message');
+        formMsg.innerText = "Отправка...";
+        formMsg.style.display = "block";
+        formMsg.style.color = "var(--color-text)";
 
-          if(ans !== correct) {
-              msg.innerText = "Ошибка в расчетах!";
-              msg.style.color = "var(--color-accent)";
-              msg.style.display = "block";
-              return;
-          }
+        // Имитация AJAX
+        setTimeout(() => {
+            formMsg.innerText = "Успешно отправлено! Мы свяжемся с вами.";
+            formMsg.style.color = "green";
+            form.reset();
+        }, 1500);
+    });
 
-          msg.innerText = "Спасибо! Данные получены.";
-          msg.style.color = "green";
-          msg.style.display = "block";
-          form.reset();
-      });
-  }
-
-  // 9. Cookie Popup
-  const cookieBtn = document.getElementById('cookie-accept');
-  if(!localStorage.getItem('velaro_cookies')) {
-      document.getElementById('cookie-popup').style.display = 'flex';
-  }
-  cookieBtn?.addEventListener('click', () => {
-      localStorage.setItem('velaro_cookies', 'true');
-      document.getElementById('cookie-popup').style.display = 'none';
-  });
+    // 8. Cookie Popup
+    if (!localStorage.getItem('velaro_cookies')) {
+        const popup = document.getElementById('cookie-popup');
+        if (popup) popup.style.display = 'flex';
+        document.getElementById('cookie-accept')?.addEventListener('click', () => {
+            localStorage.setItem('velaro_cookies', 'true');
+            popup.style.display = 'none';
+        });
+    }
 });
