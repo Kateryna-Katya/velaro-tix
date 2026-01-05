@@ -446,3 +446,445 @@ h1, h2, h3 { font-family: var(--font-heading); line-height: 1.1; }
   .edu-steps, .blog-columns { grid-template-columns: 1fr; }
   .align-center { align-items: flex-start; }
 }
+/* --- Секция О Платформе (#about) --- */
+
+/* Выравнивание контента по вертикали */
+.about .grid--2 {
+  align-items: center;
+}
+
+/* Текст */
+.about__text p {
+  margin-bottom: 25px;
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+/* Список с иконками */
+.about__list {
+  margin-top: 30px;
+  border-top: 1px solid var(--color-text);
+  padding-top: 20px;
+}
+
+.about__list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 18px;
+  font-weight: 600;
+  font-family: var(--font-heading);
+  /* Используем акцентный шрифт для списка */
+  font-size: 1.05rem;
+}
+
+/* Стилизация иконок в списке */
+.about__list svg {
+  color: var(--color-accent);
+  /* Красный акцент */
+  min-width: 22px;
+  height: 22px;
+  margin-top: 3px;
+  /* Небольшая коррекция для выравнивания с текстом */
+}
+
+/* --- Стилизация изображения (Газетный эффект) --- */
+
+/* Обёртка для создания эффекта "сдвига" */
+.about__img-wrapper {
+  position: relative;
+  z-index: 1;
+  margin-right: 20px;
+  /* Отступ справа для эффекта сдвига */
+  margin-bottom: 20px;
+  /* Отступ снизу для эффекта сдвига */
+}
+
+/* Черная подложка (тень) */
+.about__img-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-text);
+  z-index: -1;
+  /* Убираем под картинку */
+  transition: var(--transition);
+  border: 1px solid var(--color-text);
+}
+
+/* Само изображение */
+.about__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--color-text);
+  /* Тонкая рамка вокруг фото */
+  filter: grayscale(100%) contrast(1.1);
+  /* Ч/Б эффект с повышенным контрастом */
+  transition: var(--transition);
+  background: var(--color-bg);
+  /* На случай прозрачных PNG */
+}
+
+/* Hover-эффект: фото оживает и двигается */
+.about__img-wrapper:hover .about__img {
+  filter: grayscale(0%) contrast(1);
+  /* Возвращаем цвет */
+  transform: translate(-5px, -5px);
+  /* Двигаем фото вверх и влево */
+}
+
+.about__img-wrapper:hover::before {
+  transform: translate(5px, 5px);
+  /* Двигаем подложку вниз и вправо для усиления 3D эффекта */
+  background-color: var(--color-accent);
+  /* Подложка становится красной при наведении */
+  border-color: var(--color-accent);
+}
+
+/* Адаптив для мобильных */
+@media (max-width: 992px) {
+  .about__img-wrapper {
+    margin-right: 0;
+    margin-bottom: 40px;
+    /* Увеличиваем отступ снизу на мобильных */
+  }
+
+  /* Уменьшаем смещение на маленьких экранах */
+  .about__img-wrapper::before {
+    top: 10px;
+    left: 10px;
+  }
+}
+/* --- СТИЛИ ДЛЯ ЮРИДИЧЕСКИХ СТРАНИЦ --- */
+.pages {
+  padding: 120px 0 80px;
+  min-height: 80vh;
+}
+
+.pages h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  margin-bottom: 40px;
+  border-bottom: 5px solid var(--color-text);
+  padding-bottom: 20px;
+}
+
+.pages h2 {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  margin: 40px 0 20px;
+  text-transform: uppercase;
+}
+
+.pages p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 20px;
+  max-width: 800px;
+  color: rgba(26, 26, 26, 0.9);
+}
+
+.pages ul {
+  margin-bottom: 30px;
+  list-style: square;
+  padding-left: 20px;
+}
+
+.pages li {
+  margin-bottom: 10px;
+  font-size: 1.05rem;
+}
+
+.pages .container {
+  max-width: 900px;
+  /* Сужаем для удобства чтения текста */
+}
+
+/* Эффект буквицы для первого абзаца на юр. страницах */
+.pages section p:first-of-type::first-letter {
+  font-family: var(--font-heading);
+  font-size: 4rem;
+  float: left;
+  margin-right: 15px;
+  line-height: 1;
+  color: var(--color-accent);
+}
+/* Скрытие кнопки "Начать" на мобильных */
+@media (max-width: 992px) {
+  .header__cta {
+    display: none !important;
+  }
+
+  .burger {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 28px;
+    height: 18px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 1001;
+    /* Выше оверлея */
+    padding: 0;
+  }
+
+  .burger__line {
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-text);
+    transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s;
+  }
+
+  /* Анимация бургера в крестик */
+  .burger--active .burger__line:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+
+  .burger--active .burger__line:nth-child(2) {
+    opacity: 0;
+  }
+
+  .burger--active .burger__line:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+
+  /* Полноэкранная навигация */
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: var(--color-bg);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.4s, visibility 0.4s;
+  }
+
+  .nav--active {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .nav__list {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 25px;
+
+  }
+
+  .nav__link {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .nav__link--cta {
+    margin-top: 20px;
+    color: var(--color-accent);
+    border-bottom: 2px solid var(--color-accent);
+  }
+}
+/* Предотвращаем разрыв слов при анимации */
+.word {
+  display: inline-block;
+  white-space: nowrap;
+  /* Слово не разрывается внутри */
+}
+
+.char {
+  display: inline-block;
+  /* Позволяет буквам анимироваться отдельно */
+}
+
+#hero-title {
+  /* Дополнительная защита для главного заголовка */
+  overflow: hidden;
+  word-break: keep-all;
+}
+.hero__title {
+  font-size: clamp(2rem, 10vw, 5rem);
+  /* Адаптивный размер шрифта */
+  line-height: 1.1;
+}
+/* Убедимся, что хедер всегда выше всего */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1100;
+  /* Выше чем nav (1000) */
+  background: var(--color-bg);
+  transition: transform 0.3s ease, padding 0.3s ease;
+}
+
+/* Оверлей меню */
+@media (max-width: 992px) {
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: var(--color-bg);
+    z-index: 1000;
+    /* Ниже чем хедер (1100), чтобы бургер был виден */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* Исправляем скрытие: используем transform вместо visibility для надежности */
+    transform: translateY(-100%);
+    transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+    opacity: 1;
+  }
+
+  .nav--active {
+    transform: translateY(0);
+  }
+}
+/* --- FOOTER BASE STYLES --- */
+.footer {
+  padding: 60px 0 30px;
+  border-top: 3px double var(--color-text);
+  /* Фирменная двойная линия */
+  margin-top: 80px;
+  background-color: var(--color-bg);
+}
+
+.footer__grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 50px;
+}
+
+.footer__col {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer__title {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--color-text);
+  padding-bottom: 10px;
+  display: inline-block;
+}
+
+.footer__text {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  opacity: 0.8;
+}
+
+.footer__links,
+.footer__contacts {
+  list-style: none;
+  padding: 0;
+}
+
+.footer__links li,
+.footer__contacts li {
+  margin-bottom: 12px;
+}
+
+.footer__contacts li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.footer__contacts svg {
+  min-width: 18px;
+  color: var(--color-accent);
+}
+
+/* Нижняя панель с юр. ссылками */
+.footer__bottom {
+  padding-top: 30px;
+  border-top: 1px solid rgba(26, 26, 26, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  text-align: center;
+}
+
+.footer__legal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px 25px;
+}
+
+.footer__legal a {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.footer__copy {
+  font-size: 0.75rem;
+  opacity: 0.6;
+}
+
+/* --- MOBILE STYLING (Адаптив) --- */
+@media (max-width: 992px) {
+  .footer {
+    padding: 40px 0 20px;
+  }
+
+  .footer__grid {
+    grid-template-columns: 1fr;
+    /* В колонку на мобильных */
+    gap: 40px;
+    text-align: center;
+  }
+
+  .footer__col {
+    align-items: center;
+    /* Центрируем контент каждой колонки */
+  }
+
+  .footer__title {
+    width: 100%;
+    text-align: center;
+  }
+
+  .footer__contacts li {
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer__legal {
+    flex-direction: column;
+    /* Юр. ссылки в столбик для удобства нажатия пальцем */
+    gap: 12px;
+  }
+
+  .footer__legal a {
+    font-size: 0.85rem;
+    /* Чуть увеличим для мобилок */
+    padding: 5px 0;
+  }
+
+  .logo--footer {
+    margin-bottom: 15px;
+  }
+}
